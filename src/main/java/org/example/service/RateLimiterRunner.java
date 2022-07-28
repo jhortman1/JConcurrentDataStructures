@@ -49,24 +49,30 @@ public class RateLimiterRunner {
             getWordsToCheck().forEach(RateLimiterRunner::examineNumber);
 
         }, "t5");
+        Thread t6 = new Thread(() -> {
+            getWordsToCheck().forEach(RateLimiterRunner::examineNumber);
+
+        }, "t6");
 
         t1.start();
         t2.start();
         t3.start();
         t4.start();
         t5.start();
+        t6.start();
         t1.join();
         t2.join();
         t3.join();
         t4.join();
         t5.join();
+        t6.join();
 
 
     }
 
     private static void examineNumber(String num) {
         RATE_LIMITER.acquire();
-        System.out.println(LocalTime.now().truncatedTo(ChronoUnit.SECONDS) + ": " + num);
+        System.out.println(LocalTime.now().truncatedTo(ChronoUnit.SECONDS) + " Thread: "+Thread.currentThread().getName()+ ": " + num);
     }
 
 
